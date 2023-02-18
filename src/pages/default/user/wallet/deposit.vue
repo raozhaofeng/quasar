@@ -118,8 +118,8 @@
                 </q-item>
             </q-list>
 
-            <div class="q-mt-md" v-if="appConfig.hasOwnProperty('finance_deposit_tip')"
-                 v-html="$t(appConfig['finance_deposit_tip'])"></div>
+            <div class="q-mt-md" v-if="tips !== ''"
+                 v-html="tips"></div>
             <q-btn class="full-width bg-primary text-white q-mt-lg" size="lg" :label="$t('submit')"
                    @click="submitFunc"></q-btn>
         </div>
@@ -135,7 +135,6 @@ import {negativeNotify, positiveNotify} from 'src/utils'
 import {useI18n} from 'vue-i18n';
 import {imageSrc} from 'src/utils';
 import Router from 'src/router'
-import store from 'src/store'
 
 export default {
     name: 'WalletDeposit',
@@ -143,7 +142,7 @@ export default {
     setup() {
         const $i18n = useI18n()
         const state = reactive({
-            appConfig: store.state.prefetch.config,
+            tips: '',
             baseURL: process.env.baseURL,
             paymentList: [] as any,
             currentPayment: {} as any,
@@ -157,8 +156,9 @@ export default {
         // 初始化数据
         onMounted(() => {
             WalletDepositInfoAPI().then((res: any) => {
-                state.paymentList = res
-                state.currentPayment = res[0]
+                state.tips = res.tips
+                state.paymentList = res.items
+                state.currentPayment = res.items[0]
                 state.params.id = state.currentPayment.id
             })
         })

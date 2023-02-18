@@ -2,7 +2,7 @@
     <div>
         <backtrack :title="$t('userWithdraw')"></backtrack>
 
-        <div class="q-ma-md">
+        <div class="q-ma-md" v-if="isLoading">
             <div
                 v-if="accountList.length === 0 || (templateSetting['template_wallet']['withdraw_verify'] && userInfo.verify !== 20)">
                 <q-banner dense class="bg-red-5 q-mb-md" v-if="accountList.length === 0">
@@ -68,8 +68,8 @@
                     </q-item>
                 </q-list>
 
-                <div class="q-mt-md" v-if="appConfig.hasOwnProperty('finance_withdraw_tip')"
-                     v-html="$t(appConfig['finance_withdraw_tip'])"></div>
+                <div class="q-mt-md" v-if="tips !== ''"
+                     v-html="tips"></div>
                 <q-btn class="full-width bg-primary text-white q-mt-lg" size="lg" :label="$t('submit')"
                        @click="submitIsSecurityKeyFunc"></q-btn>
             </div>
@@ -109,7 +109,8 @@ export default {
     components: {backtrack},
     setup() {
         const state = reactive({
-            appConfig: store.state.prefetch.config,
+            isLoading: false,
+            tips: '',
             templateSetting: JSON.parse(JSON.stringify(store.state.prefetch.template)),
             securityKeyDialogShow: false,
             userInfo: JSON.parse(JSON.stringify(store.state.user.info)),
@@ -120,8 +121,10 @@ export default {
 
         onMounted(() => {
             WalletAccountIndexAPI().then((res: any) => {
-                state.accountList = res
+                state.isLoading = true
+                state.accountList = res.items
                 if (state.accountList.length > 0) {
+                    state.tips = res.tips
                     state.currentAccount = state.accountList[0]
                     state.params.account_id = state.accountList[0].id
                 }

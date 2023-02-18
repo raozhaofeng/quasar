@@ -127,7 +127,7 @@
                     </q-item-section>
                 </q-item>
 
-                <q-item clickable @click="$router.push({name: 'UserLevel'})" v-if="appConfig['show_vip']">
+                <q-item clickable @click="$router.push({name: 'UserLevel'})" v-if="appConfig['show_level']">
                     <q-item-section avatar>
                         <q-icon name="sym_o_diamond" size="md" color="secondary"></q-icon>
                     </q-item-section>
