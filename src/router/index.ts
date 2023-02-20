@@ -102,5 +102,8 @@ export const dynamicTemplate = (templateRoutes: TemplateRouteInterface[], templa
     }
 }
 
-dynamicTemplate(templateRoutes, store.state.prefetch.template['template'], '');
+const storeTemplate = store.state.prefetch.template
+if (storeTemplate.hasOwnProperty('template')) {
+    dynamicTemplate(templateRoutes.get(storeTemplate['template']), storeTemplate['template'], '');
+}
 export default Router;

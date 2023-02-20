@@ -50,7 +50,7 @@ export default defineComponent({
 
             //  请求预设数据
             PreFetchAPI().then(async (res: any) => {
-                dynamicTemplate(templateRoutes, res.template['template'], '')
+                dynamicTemplate(templateRoutes.get(res.template['template']), res.template['template'], '')
                 await Router.replace(Router.currentRoute.value.fullPath)
                 res.config['cache_expire'] = nowTime + parseInt(res.config['cache_expire'])
                 store.commit('prefetch/updateConfig', res.config)           //  保存配置
