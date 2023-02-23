@@ -11,7 +11,6 @@ import {dynamicTemplate} from 'src/router';
 import {templateRoutes} from 'src/router/routes';
 import {setLocales} from 'boot/i18n';
 import {setCssVar} from 'quasar'
-import {imageSrc} from 'src/utils';
 
 export default defineComponent({
     name: 'App',
@@ -21,17 +20,6 @@ export default defineComponent({
             setCssVar('primary', template['color_primary'])
             setCssVar('secondary', template['color_secondary'])
             setCssVar('accent', template['color_accent'])
-        }
-
-        //  设置logo图标
-        const setAppLogoFunc = (logoPath: string) => {
-            logoPath = imageSrc(logoPath)
-            localStorage.setItem('_appIco', logoPath)
-            let documentLink = document.createElement('link')
-            documentLink.type = 'image/x-icon';
-            documentLink.rel = 'shortcut icon';
-            documentLink.href = imageSrc(logoPath)
-            document.getElementsByTagName('head')[0].appendChild(documentLink)
         }
 
         // 默认设置主题颜色
@@ -59,8 +47,6 @@ export default defineComponent({
                 store.commit('prefetch/updateLangList', res.langList)      //  保存语言列表
                 store.commit('prefetch/updateCountries', res.countries)     //  保存国家列表
                 store.commit('user/updateLang', res.lang)                   //  用户语言
-                // 设置网站图标ICO
-                setAppLogoFunc(res.config['site_logo'])
                 // 设置主题颜色
                 setCssValFunc(res.template)
                 // 重新载入语言包

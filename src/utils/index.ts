@@ -27,7 +27,7 @@ export const imageSrc = (url: string) => {
         if (storageIco !== null && storageIco != '') {
             return storageIco
         }
-        return '/images/world.png';
+        return '/icons/world.png';
     }
     if (url.indexOf('http') > -1) {
         return url
